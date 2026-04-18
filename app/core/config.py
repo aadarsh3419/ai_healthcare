@@ -5,6 +5,7 @@ class Settings(BaseSettings):
     DEBUG: bool = False
     MONGODB_URL: str = "mongodb://localhost:27017"
     DATABASE_NAME: str = "healthchatbot"
+    JWT_EXPIRE_MINUTES: int = 1440 
     JWT_SECRET_KEY: str = "change_this_in_production"
     JWT_ALGORITHM: str = "HS256"
     GEMINI_API_KEY: str = ""
