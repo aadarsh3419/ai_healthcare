@@ -7,19 +7,18 @@ router = APIRouter()
 
 @router.post("/register")
 async def register(user_data: UserCreate):
-    db = get_db()
-
-    existing_user = await db["users"].find_one(
+    db = get_db()#mongo db use this that was i implement it here. and it was getting the data from database.py file
+    existing_user = await db["users"].find_one(#check if email already exist or not 
         {"email": user_data.email}
     )
-    if existing_user:
+    if existing_user:#if email exist then it will raise the error
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="email already exists"
         )
     hashed = hash_password(user_data.password)
 
-    new_user = {
+    new_user = {#create new user and insert into database
         "name": user_data.name,
         "email": user_data.email,
         "password": hashed,
@@ -31,14 +30,14 @@ async def register(user_data: UserCreate):
 
     }
 
-    result = await db["users"].insert_one(new_user)
+    result = await db["users"].insert_one(new_user)#after creating new user it will generate the token for that user and return the response
 
-    token = create_access_token({
+    token = create_access_token({#create token for new user
         "user_id": str(result.inserted_id),
         "email":user_data.email
     })
 
-    return {
+    return {#return the response after registration
         "message":"registration sussefull",
         "token": token,
         "user":{
@@ -48,20 +47,20 @@ async def register(user_data: UserCreate):
         }
     }
 
-@router.post("/login")
+@router.post("/login")#login user and generate token for that user and return the response
 async def login(user_data: UserLogin):
     db = get_db()
 
-    user = await db["users"].find_one(
+    user = await db["users"].find_one(#check if email exist or not
         {"email":user_data.email}
     )
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+            status_code=status.HTTP_401_UNAUTHORIZED,#if email not exist then it will raise the error
             detail="Invalid email or password"
 
         )
-    is_valid = verify_password(user_data.password,user["password"])
+    is_valid = verify_password(user_data.password,user["password"])#check if password is correct or not
     if not is_valid:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -82,6 +81,6 @@ async def login(user_data: UserLogin):
         }
     }
 
-@router.get("/me")
+@router.get("/me")#this is the endpoint for getting the current user details and it will be implemented in future
 async def get_me():
     return {"message": "coming soon"}
