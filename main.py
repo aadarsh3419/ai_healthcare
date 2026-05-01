@@ -31,6 +31,13 @@ app.add_middleware(
 app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
 app.include_router(chat_router, prefix="/api/chat", tags=["chat"])  # ← ADD KARO
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # ← * karo — sab origins allow
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 @app.get("/")
 async def root():
     return {"message":f"{settings.APP_NAME} is running"}
