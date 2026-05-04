@@ -8,7 +8,6 @@ class Settings(BaseSettings):#this function is used to create the settings schem
     JWT_EXPIRE_MINUTES: int = 1440 
     JWT_SECRET_KEY: str = "change_this_in_production"
     JWT_ALGORITHM: str = "HS256"
-    GEMINI_API_KEY: str = ""
     CHROMA_DB_PATH: str = "./chroma_db"
     EMBEDDING_MODEL: str = "all-MiniLM-L6-v2"
     TOP_K_RESULTS: int = 5

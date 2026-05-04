@@ -1,0 +1,74 @@
+from pydantic_settings import BaseSettings
+it is a liabrariy which takes data from the .env file where over personal data is stored
+and also do type checking ,and default + override mange karta hai
+
+class Settings(BaseSettings):
+it is special config class
+
+Variable	          Use
+MONGODB_URL	          DB connect
+JWT_SECRET_KEY	      Login tokens
+GEMINI_API_KEY        AI calls
+CHROMA_DB_PATH	      vector DB
+EMBEDDING_MODEL	      NLP
+
+to call .env where over personal or private thinks we call and take them from .env
+class config:
+   env_file = ".env"
+
+from fastapi import FastAPI (it use for backend )
+
+app = FastAPI(
+    title =Settings.app_name,
+    debug = Settings.debug,
+    lifespan = lifespan
+)
+title    =    api ka app_name
+debug   =     dev vs prod
+lifespan =  startup/shutdown logic
+
+
+@asynccontextmanager
+async def lifespan(app:FastAPI):
+
+Server start →
+    code before yield runs
+
+Server running →
+    normal API work
+
+Server stop →
+    code after yield runs
+
+server start pe chalega
+print(f"starting your health{settings.APP_NAME}...")
+
+server band hone pe chalega
+print("server shutting down")
+
+Yaha tum karte:
+
+DB connect
+AI model load
+cache initialize
+
+Shutdown pe:
+DB close
+cleanup
+
+from fastapi.middleware.cors import CORSMiddleware
+Browser security rule hota hai:
+"Frontend aur backend alag origin pe hai → block"
+
+allow_origins = ["http://localhost:3000"]
+React app allowed hai
+
+@app.get("/")
+async def root():
+yai ak route hai 
+
+jab request aata hai 
+GET /
+
+response
+{"message": "Health Chatbot API is running"}
